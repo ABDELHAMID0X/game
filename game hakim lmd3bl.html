@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{margin: 0;padding: 0;box-sizing: border-box;}
+    body{width: 100%;display: flex;justify-content: center;font-family: sans-serif;font-weight: 900;}
+    .container{display: grid;grid-template-columns: 150px 150px 150px;grid-template-rows: 100px 100px 100px;
+    width: 450px;height: 300px;border: 1px solid black;margin-top: 10vh;box-shadow: 0 0 20px rgba(0, 0, 0, 0.253);} 
+    .container div{border: 2px solid rgb(22, 230, 212);cursor: pointer;display: grid;color: red;place-content: center center;
+    font-size: 55px;}   
+    .container div:hover{background-color: rgb(29, 226, 216);}   
+    .chose{position: absolute;right: 0;top: 20vh;right: 120px;border: 2px solid black;text-align: center;}   
+    .chose h2, .you h2 , .cmpt h2{cursor: pointer; border: 2px solid blue;padding: 10px 10px;}  
+    .chose h2:nth-child(2):hover,.chose h2:nth-child(3):hover{background-color: rgb(0, 238, 255);border: 2px solid rgb(0, 238, 255);
+    color: rgb(82, 79, 79);}   
+    .you{text-align: center;margin-top: 10vh;} 
+    .cmpt{text-align: center;margin-top: 10vh;}
+    .cmpt h2:nth-child(2){background-color: rgb(253, 138, 138);border: 2px solid rgb(235, 47, 14);}   
+    .you h2:nth-child(2){background-color: rgb(156, 248, 156);border: 2px solid rgb(0, 255, 0);}   
+    .Fin{position: absolute;width: 100%;height: 100vh;background:linear-gradient(rgba(112, 111, 111, 0.363),rgb(112, 128, 128));
+    padding-top: 30vh;padding-left: 35%;}
+    .model{width: 450px;padding: 20px;display: grid;height: 150px;grid-template-columns: auto;background-color: white;
+    border: 2px solid rgb(47, 160, 189);text-align: center;}    
+    button{width: 120px;height: 40px;background-color: transparent;border: 2px solid rgb(0, 177, 177);font-size: large;
+    cursor: pointer;margin-left: 140px;align-self: center;}    
+    button:hover{background-color: rgb(9, 230, 230);border: none;}     
+    button:active{background-color: rgb(5, 192, 192);}          
+</style>
+<body>
+    <div class="you"><h2>your signe</h2><h2>X</h2></div>
+    <div class="container">
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div>   
+    </div>
+    <div class="chose">
+        <h2>Choose your signe</h2>
+        <h2>X</h2><h2>O</h2>
+    </div>
+    <div class="cmpt"><h2>computer signe</h2><h2>O</h2></div>
+    <div class="Fin">
+        <div class="model"><h2>You Win :)</h2><button>Replay</button></div>   
+    </div>
+</body>  
+<script>
+    $(document).ready(function(){
+        $(".Fin").fadeOut(0),$(".you").slideUp(0),$(".cmpt").slideUp(0)
+        $(".chose h2:nth-child(2)").click(function(){
+            window.tic = ["X","O"]
+            $(".chose").fadeOut(200),$(".you").slideDown(1000),$(".cmpt").slideDown(1000)})
+        $(".chose h2:nth-child(3)").click(function(){
+            window.tic = ["O","X"],$(".chose").fadeOut(200),$('.cmpt h2:nth-child(2)').text("X")
+            $('.you h2:nth-child(2)').text("O"),$(".you").slideDown(),$(".cmpt").slideDown()})   
+        var score = 0 , lose = 0, div = $(".container div"),i = 0,conteur = 0
+        function winer(){
+            for(x=0;x<9;x+=3){
+                 if(div.eq(x).text() == tic[i] && div.eq(x+1).text() == tic[i] && div.eq(x+2).text() == tic[i])
+                    score = 1}
+            for(x=0;x<9;x++){
+                 if(div.eq(x).text() == tic[i] && div.eq(x+3).text() == tic[i] && div.eq(x+6).text() == tic[i])
+                    score = 1}
+            if(div.eq(0).text() == tic[i] && div.eq(4).text() == tic[i] && div.eq(8).text() == tic[i])
+                score = 1
+            if(div.eq(2).text() == tic[i] && div.eq(4).text() == tic[i] && div.eq(6).text() == tic[i])
+                score = 1}
+        $(".container div").click(function(){
+            var wrong = false
+            $(this).is(':empty') ? ($(this).text(tic[i]),conteur += 1) : wrong = true
+            winer()
+            if(!wrong)
+                i == 0 ? (i+=1, $(this).css('color','red')) : (i-=1, $(this).css('color','rgb(5, 209, 5)'))
+            if(score == 1){
+                $(this).css('color','rgb(5, 209, 5)'),$(".model h2").text("Congratulation you win :D")
+                $(".Fin").fadeIn(500)
+                return false}
+            while(true){
+                var e = Math.floor((Math.random() * 10))
+                if(conteur==5){
+                    i == 0 ? (i+=1, $(this).css('color','red')) : (i-=1, $(this).css('color','rgb(5, 209, 5)'))
+                    $(".model h2").text("There is no winner here"),$(".Fin").fadeIn(500)
+                    return false}
+                if(wrong)
+                    return false
+                if(div.eq(e).is(':empty')){
+                    div.eq(e).text(tic[i])
+                    winer()
+                    if(score == 1){
+                        $(".model h2").text("Loser Computer win x_x"),$(".Fin").fadeIn(500)}
+                    i == 0 ? (i+=1, $(this).css('color','red')) : (i-=1, $(this).css('color','rgb(5, 209, 5)'))
+                    return false}}})
+        $("button").click(function(){
+            location.reload()})
+    })
+</script>
+</html>
